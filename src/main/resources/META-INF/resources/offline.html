@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Desconectado | MyFIN</title>
+    <style>
+    
+    	html{
+    		align-items:center;
+    	
+    	}
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: sans-serif;
+            color: #555;
+            display: block;
+        	margin-left: auto;
+        	margin-right: auto;
+            width: 60%;
+            align-items: center;
+        }
+
+        .content {
+            display: block;
+        	margin-left: auto;
+        	margin-right: auto;
+            width: 50%;
+            align-items: center;
+        }
+
+        .offline-image {
+        	display: block;
+        	margin-left: auto;
+        	margin-right: auto;
+            width: 50%;
+            align-items: center;
+            height: 25%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="content">
+    <h1>Você está desconectado !</h1>
+    <p>Sua conexão com a internet caiu. Para continuar usando a aplicação, reconecte-se.</p>
+    <img src="./images/offline.png" alt="offline" class="offline-image"/>
+</div>
+<script>
+    window.addEventListener('online', () => window.location.reload());
+</script>
+</body>
+</html>
