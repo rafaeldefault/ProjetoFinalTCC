@@ -1,0 +1,46 @@
+package com.example.application.data.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+@Entity
+public class ContasPagar extends AbstractEntity {
+
+    @NotEmpty
+    private String conta = "";
+
+    private double valor;
+
+    @NotNull
+    @ManyToOne
+    private Status status;
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getConta() {
+        return conta;
+    }
+
+    public void setConta(String conta) {
+        this.conta = conta;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+
+    public void setSaldo(double valor) {
+        this.valor = valor;
+    }
+}
