@@ -69,7 +69,7 @@ public class MainLayout extends AppLayout {
 	
 	private void createDrawer() {
 		
-		RouterLink listView	=	new RouterLink("Contas Correntes", ListView.class);
+		RouterLink listView	=	new RouterLink("Contas Bancárias", ListView.class);
 		
 		RouterLink homePage	=	new RouterLink("Home", HomePage.class);
 		

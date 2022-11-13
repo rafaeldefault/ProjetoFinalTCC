@@ -12,9 +12,11 @@ import javax.validation.constraints.NotNull;
 public class Despesas extends AbstractEntity {
 
     @NotEmpty
-    private String conta = "";
+    private String natureza = "";
 
-    private double saldo;
+    private double valor;
+    
+    private String mes;
 
     @NotNull
     @ManyToOne
@@ -28,19 +30,27 @@ public class Despesas extends AbstractEntity {
         this.status = status;
     }
 
-    public String getConta() {
-        return conta;
+    public String getNatureza() {
+        return natureza;
     }
 
-    public void setConta(String conta) {
-        this.conta = conta;
+    public void setNatureza(String natureza) {
+        this.natureza = natureza;
     }
 
-    public double getSaldo() {
-        return saldo;
+    public double getValor() {
+        return valor;
     }
 
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
+    public void setValor(double valor) {
+        this.valor = valor;
     }
+
+	public String getMes() {
+		return mes;
+	}
+
+	public void setMes(String mes) {
+		this.mes = mes;
+	}
 }

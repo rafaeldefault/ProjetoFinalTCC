@@ -30,7 +30,7 @@ public class DashBoardView extends VerticalLayout{
 		GradientColor color = GradientColor.createLinear(0, 0, 0, 1);
 		color.addColorStop(0, new SolidColor("#000000"));
 		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-		add(getContaStats(), getContasSaldoChart());
+		add(getContaStats(), getContasSaldoChart(), getContasPagarStats(), getContasPagarDividaChart());
 	}
 	
 	private Component getContaStats() {
@@ -53,6 +53,25 @@ public class DashBoardView extends VerticalLayout{
 		return chart;
 	}
 	
+	private Component getContasPagarStats() {
+        Span stats = new Span("Divida Total " + service.somaDivida());
+        stats.addClassNames("text-xl", "mt-m");
+        return stats;
+    }
+
+
+
+    private Component getContasPagarDividaChart() {
+        Chart chart = new Chart(ChartType.COLUMN);
+        
+        
+        DataSeries dataSeries = new DataSeries();
+        service.buscaTodasContasPagar(null).forEach(contaPagar->{
+            dataSeries.add(new DataSeriesItem(contaPagar.getEntidade(), contaPagar.getValor()));
+            });
+        chart.getConfiguration().setSeries(dataSeries);
+        return chart;
+    }
 
 
 	

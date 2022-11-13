@@ -118,6 +118,7 @@ public class ListView extends VerticalLayout {
     	service.deletarConta(event.getContas());
     	updateList();
     	fecharEditor();
+    	UI.getCurrent().getPage().reload();
     }
 
 
