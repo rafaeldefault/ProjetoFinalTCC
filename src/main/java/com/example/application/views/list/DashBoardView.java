@@ -7,8 +7,11 @@ import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.ChartType;
+import com.vaadin.flow.component.charts.model.Configuration;
+import com.vaadin.flow.component.charts.model.DataLabelsFunnel;
 import com.vaadin.flow.component.charts.model.DataSeries;
 import com.vaadin.flow.component.charts.model.DataSeriesItem;
+import com.vaadin.flow.component.charts.model.PlotOptionsFunnel;
 import com.vaadin.flow.component.charts.model.style.GradientColor;
 import com.vaadin.flow.component.charts.model.style.SolidColor;
 import com.vaadin.flow.component.html.Span;
@@ -42,7 +45,28 @@ public class DashBoardView extends VerticalLayout{
 
 
 	private Component getContasSaldoChart() {
-		Chart chart = new Chart(ChartType.PIE);
+		Chart chart = new Chart(ChartType.PYRAMID);
+		
+		// Modify the default configuration a bit
+		Configuration conf = chart.getConfiguration();
+		conf.getLegend().setEnabled(false);
+
+		// Give more room for the labels
+		conf.getChart().setSpacingRight(120);
+
+		// Configure the funnel neck shape
+		PlotOptionsFunnel options = new PlotOptionsFunnel();
+		
+
+		// Style the data labels
+		DataLabelsFunnel dataLabels = new DataLabelsFunnel();
+		dataLabels.setFormat("<b>{point.name}</b> ({point.y:,.2f})");
+		dataLabels.setSoftConnector(false);
+		dataLabels.setColor(SolidColor.BLACK);
+		options.setDataLabels(dataLabels);
+
+		conf.setPlotOptions(options);
+
 		
 		
 		DataSeries dataSeries = new DataSeries();

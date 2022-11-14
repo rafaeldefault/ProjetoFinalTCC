@@ -70,33 +70,35 @@ public class MainLayout extends AppLayout {
 	private void createDrawer() {
 		
 		RouterLink listView	=	new RouterLink("Contas Bancárias", ListView.class);
+		HorizontalLayout List = new HorizontalLayout(VaadinIcon.WALLET.create(), listView);
 		
 		RouterLink homePage	=	new RouterLink("Home", HomePage.class);
+		HorizontalLayout Home = new HorizontalLayout(VaadinIcon.HOME.create(), homePage);
 		
 		RouterLink dashBoard = new RouterLink("Dashboard", DashBoardView.class);
+		HorizontalLayout Dash = new HorizontalLayout(VaadinIcon.DASHBOARD.create(), dashBoard);
 				
 		RouterLink DespesasView	=	new RouterLink("Despesas", DespesasView.class);
+		HorizontalLayout Despesas = new HorizontalLayout(VaadinIcon.MONEY_WITHDRAW.create(), DespesasView);
 		
 		RouterLink ContasPagarView	=	new RouterLink("Contas a Pagar", ContasPagarView.class);
+		HorizontalLayout ContasP = new HorizontalLayout(VaadinIcon.MONEY_EXCHANGE.create(), ContasPagarView);
 		
 		RouterLink ReceitasView	=	new RouterLink("Receitas", ReceitasView.class);
+		HorizontalLayout Receitas = new HorizontalLayout(VaadinIcon.MONEY_DEPOSIT.create(), ReceitasView);
+		
+		
 		
 		listView.setHighlightCondition(HighlightConditions.sameLocation());
 		
 		
 		addToDrawer(new VerticalLayout(
-				VaadinIcon.HOME.create(),
-				homePage,
-				VaadinIcon.WALLET.create(),
-				listView,
-				VaadinIcon.DASHBOARD.create(),
-				dashBoard,
-				VaadinIcon.MONEY_WITHDRAW.create(),
-				DespesasView,
-				VaadinIcon.MONEY_EXCHANGE.create(),
-				ContasPagarView,
-				VaadinIcon.MONEY_DEPOSIT.create(),
-				ReceitasView
+				Home,
+				List,
+				Dash,
+				Despesas,
+				ContasP,
+				Receitas
 				));
 		
 	}
