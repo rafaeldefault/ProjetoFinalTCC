@@ -5,11 +5,13 @@ import com.example.application.data.entity.ContasPagar;
 import com.example.application.data.entity.Despesas;
 import com.example.application.data.entity.Receitas;
 import com.example.application.data.entity.Status;
+import com.example.application.data.entity.TipoConta;
 import com.example.application.data.repository.ContasPagarRepository;
 import com.example.application.data.repository.ContasRepository;
 import com.example.application.data.repository.DespesasRepository;
 import com.example.application.data.repository.ReceitasRepository;
 import com.example.application.data.repository.StatusRepository;
+import com.example.application.data.repository.TipoContaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,18 +24,21 @@ public class CrmService {
     private final ContasPagarRepository contasPagarRepository;
     private final ReceitasRepository receitasRepository;
     private final DespesasRepository despesasRepository;
+    private final TipoContaRepository tipoContaRepository;
 
     public CrmService(ContasRepository contasRepository,
     		ContasPagarRepository contasPagarRepository,
     		DespesasRepository despesasRepository,
     		ReceitasRepository receitasRepository,
-    		StatusRepository statusRepository) {
+    		StatusRepository statusRepository,
+    		TipoContaRepository tipoContaRepository) {
 
         this.contasRepository = contasRepository;
         this.contasPagarRepository = contasPagarRepository;
         this.despesasRepository = despesasRepository;
         this.receitasRepository = receitasRepository;
         this.statusRepository = statusRepository;
+        this.tipoContaRepository = tipoContaRepository;
     }
     
     //ContasBancarias
@@ -138,6 +143,10 @@ public class CrmService {
         }
     }
     
+    public List<Receitas> somaMesReceitas(String mesComp) {
+    	return receitasRepository.buscaMes(mesComp);
+    }
+    
     public void salvarReceita(Receitas receita){
         if(receita == null){
             System.err.println("Receita retornou null");
@@ -157,5 +166,9 @@ public class CrmService {
 
     public List<Status> buscaTodosStatus(){
         return statusRepository.findAll();
+    }
+    
+    public List<TipoConta> buscaTodosTipos(){
+        return tipoContaRepository.findAll();
     }
 }

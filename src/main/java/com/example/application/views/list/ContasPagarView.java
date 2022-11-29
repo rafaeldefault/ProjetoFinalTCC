@@ -126,7 +126,7 @@ public class ContasPagarView extends VerticalLayout {
         grid.addClassNames("contasPagar-grid");
         grid.setAllRowsVisible(true);
         grid.setColumns("entidade", "valor", "vencimento");
-        grid.addColumn(contact -> contact.getStatus().getName()).setHeader("Status");
+        grid.addColumn(contact -> contact.getStatus().getNomePagar()).setHeader("Status");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         
         
@@ -154,7 +154,7 @@ public class ContasPagarView extends VerticalLayout {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addContaButton = new Button("Criar Conta");
+        Button addContaButton = new Button("Criar conta");
         addContaButton.addClickListener(e -> adicionarConta());
         
 

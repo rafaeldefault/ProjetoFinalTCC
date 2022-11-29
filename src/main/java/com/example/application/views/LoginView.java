@@ -15,42 +15,49 @@ import com.vaadin.flow.router.Route;
 public class LoginView extends VerticalLayout implements BeforeEnterListener{
 	private LoginForm login = new LoginForm();
 	
-	public LoginView() {
+	
+    public LoginView() {
 		addClassName("login-view");
 		setSizeFull();
 		setAlignItems(Alignment.CENTER);
 		setJustifyContentMode(JustifyContentMode.CENTER);
 		
-		
-		//Internacionalização do formulario de login
-		
-		LoginI18n i18n = LoginI18n.createDefault();
-		
+        LoginI18n i18n = LoginI18n.createDefault();
+        
+        i18n.setHeader(new LoginI18n.Header());
+        LoginI18n.Header i18nHeader = i18n.getHeader();
+        i18nHeader.setTitle("MyFIN");
+        i18nHeader.setDescription("O Sistema de Gerenciamento de Finanças");
 
-		LoginI18n.Form i18nForm = i18n.getForm();
+        LoginI18n.Form i18nForm = i18n.getForm();
 		i18nForm.setTitle("Entre com seus dados");
 		i18nForm.setUsername("Usuário");
 		i18nForm.setPassword("Senha");
 		i18nForm.setSubmit("Enviar");
 		i18nForm.setForgotPassword("Esqueceu a senha ?");
-		i18n.setForm(i18nForm);
+        i18n.setForm(i18nForm);
 
+        i18n.setAdditionalInformation("IFSP Campus Guarulhos - 2020.1");
+		
 		LoginI18n.ErrorMessage i18nErrorMessage = i18n.getErrorMessage();
 		i18nErrorMessage.setTitle("Erro");
 		i18nErrorMessage.setMessage("Verifique seus dados e tente novamente !");
 		i18n.setErrorMessage(i18nErrorMessage);
-
+		
+        LoginOverlay loginOverlay = new LoginOverlay();
+        loginOverlay.setI18n(i18n);
+        add(loginOverlay);
+        loginOverlay.setOpened(true);
+        loginOverlay.getElement().setAttribute("no-autofocus", "");
+        
 		LoginForm loginForm = new LoginForm();
 		loginForm.setI18n(i18n);
-		
-		
-		loginForm.setAction("login");
-		
-		
-		
+	
+		loginOverlay.setAction("login");
+	
 		add(
 				new H1("MyFIN"),
-				loginForm
+				loginOverlay
 			);
 		
 			
@@ -63,6 +70,15 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener{
 			.getParameters()
 			.containsKey("error")){
 					login.setError(true);
+
+			        LoginOverlay loginOverlay = new LoginOverlay();
+			        loginOverlay.setError(true);
+			        add(loginOverlay);
+			        loginOverlay.setOpened(true);
+			        // Prevent the example from stealing focus when browsing the documentation
+			        loginOverlay.getElement().setAttribute("no-autofocus", "");
+				    
+
 		}
 	}
 	

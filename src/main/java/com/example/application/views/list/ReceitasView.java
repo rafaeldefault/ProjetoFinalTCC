@@ -158,8 +158,22 @@ public class ReceitasView extends VerticalLayout {
         Button addContaButton = new Button("Criar Receita");
         addContaButton.addClickListener(e -> adicionarReceita());
         
+        Button gerarGraficoRec = new Button("Gerar Gráfico");
+        gerarGraficoRec.addThemeVariants(ButtonVariant.LUMO_PRIMARY,
+                ButtonVariant.LUMO_SUCCESS);
+        gerarGraficoRec.addClickListener(g ->
+        										gerarGraficoRec.getUI().ifPresent(ui ->
+        										ui.navigate("dashboard_receitas")));
+        
+        Button gerarGraficoRecXDesp = new Button("Comparar c/ Despesas");
+        gerarGraficoRecXDesp.addThemeVariants(ButtonVariant.LUMO_SUCCESS,
+                ButtonVariant.LUMO_PRIMARY);
+        gerarGraficoRecXDesp.addClickListener(g ->
+        gerarGraficoRecXDesp.getUI().ifPresent(ui ->
+        										ui.navigate("dashboard_receitasxdespesas")));
+        
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContaButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContaButton, gerarGraficoRec, gerarGraficoRecXDesp);
         toolbar.addClassName("toolbar");
         return toolbar;
     }

@@ -19,6 +19,9 @@ public interface ReceitasRepository extends JpaRepository<Receitas, Integer> {
     @Query(value = "SELECT sum(valor) FROM Receitas")
     public double soma();
     
+    @Query(value="SELECT c.mes, sum(c.valor) FROM Receitas c WHERE c.mes = ', :mesComp, ' GROUP BY c.mes")
+    List<Receitas> buscaMes(@Param("mesComp") String mesComp);
+    
     
 
 }

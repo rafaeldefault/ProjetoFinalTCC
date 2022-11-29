@@ -11,9 +11,17 @@ import com.vaadin.flow.component.charts.model.Configuration;
 import com.vaadin.flow.component.charts.model.DataLabelsFunnel;
 import com.vaadin.flow.component.charts.model.DataSeries;
 import com.vaadin.flow.component.charts.model.DataSeriesItem;
+import com.vaadin.flow.component.charts.model.Label;
+import com.vaadin.flow.component.charts.model.PlotLine;
+import com.vaadin.flow.component.charts.model.PlotOptionsColumn;
 import com.vaadin.flow.component.charts.model.PlotOptionsFunnel;
+import com.vaadin.flow.component.charts.model.Stacking;
+import com.vaadin.flow.component.charts.model.Tooltip;
+import com.vaadin.flow.component.charts.model.XAxis;
+import com.vaadin.flow.component.charts.model.YAxis;
 import com.vaadin.flow.component.charts.model.style.GradientColor;
 import com.vaadin.flow.component.charts.model.style.SolidColor;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -33,11 +41,11 @@ public class DashBoardView extends VerticalLayout{
 		GradientColor color = GradientColor.createLinear(0, 0, 0, 1);
 		color.addColorStop(0, new SolidColor("#000000"));
 		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-		add(getContaStats(), getContasSaldoChart(), getContasPagarStats(), getContasPagarDividaChart());
+		add(getContaStats(), getContasSaldoChart());
 	}
 	
 	private Component getContaStats() {
-		Span stats = new Span("Saldo Total " + service.somaSaldo());
+		H3 stats = new H3("Saldo Total " + service.somaSaldo());
 		stats.addClassNames("text-xl", "mt-m");
 		return stats;
 	}
@@ -45,14 +53,15 @@ public class DashBoardView extends VerticalLayout{
 
 
 	private Component getContasSaldoChart() {
-		Chart chart = new Chart(ChartType.PYRAMID);
+		Chart chart = new Chart(ChartType.PIE);
 		
 		// Modify the default configuration a bit
 		Configuration conf = chart.getConfiguration();
-		conf.getLegend().setEnabled(false);
+		conf.getLegend().setEnabled(true); 
+        
 
 		// Give more room for the labels
-		conf.getChart().setSpacingRight(120);
+		conf.getChart().setSpacingRight(0);
 
 		// Configure the funnel neck shape
 		PlotOptionsFunnel options = new PlotOptionsFunnel();
@@ -61,12 +70,17 @@ public class DashBoardView extends VerticalLayout{
 		// Style the data labels
 		DataLabelsFunnel dataLabels = new DataLabelsFunnel();
 		dataLabels.setFormat("<b>{point.name}</b> ({point.y:,.2f})");
-		dataLabels.setSoftConnector(false);
+		dataLabels.setSoftConnector(true);
 		dataLabels.setColor(SolidColor.BLACK);
 		options.setDataLabels(dataLabels);
+		
+        Tooltip tooltip = new Tooltip();
+        tooltip.setFormatter(
+                "function() { return 'R$: '+ this.y +'';}");
+        tooltip.setShared(false);
+        conf.setTooltip(tooltip);
 
 		conf.setPlotOptions(options);
-
 		
 		
 		DataSeries dataSeries = new DataSeries();
@@ -74,30 +88,8 @@ public class DashBoardView extends VerticalLayout{
 			dataSeries.add(new DataSeriesItem(conta.getConta(), conta.getSaldo()));
 			});
 		chart.getConfiguration().setSeries(dataSeries);
+		
 		return chart;
 	}
-	
-	private Component getContasPagarStats() {
-        Span stats = new Span("Divida Total " + service.somaDivida());
-        stats.addClassNames("text-xl", "mt-m");
-        return stats;
-    }
-
-
-
-    private Component getContasPagarDividaChart() {
-        Chart chart = new Chart(ChartType.COLUMN);
-        
-        
-        DataSeries dataSeries = new DataSeries();
-        service.buscaTodasContasPagar(null).forEach(contaPagar->{
-            dataSeries.add(new DataSeriesItem(contaPagar.getEntidade(), contaPagar.getValor()));
-            });
-        chart.getConfiguration().setSeries(dataSeries);
-        return chart;
-    }
-
-
-	
 
 }

@@ -2,6 +2,7 @@ package com.example.application.views.list;
 
 import com.example.application.data.entity.Contas;
 import com.example.application.data.repository.ContasRepository;
+import com.example.application.data.repository.TipoContaRepository;
 import com.example.application.data.service.CrmService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.AttachEvent;
@@ -9,6 +10,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.ChartType;
 import com.vaadin.flow.component.charts.model.DataSeries;
@@ -28,6 +30,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.server.frontend.TaskRunNpmInstall.Stats;
@@ -98,7 +101,7 @@ public class ListView extends VerticalLayout {
     }
 
     private void configureForm() {
-        form = new ContaForm(service.buscaTodosStatus());
+        form = new ContaForm(service.buscaTodosTipos());
         ((HasSize) form).setWidth("25em");
 
         form.addListener(ContaForm.SalvarEvento.class, this::salvarConta);
@@ -126,7 +129,7 @@ public class ListView extends VerticalLayout {
         grid.addClassNames("contas-grid");
         grid.setAllRowsVisible(true);
         grid.setColumns("conta", "saldo");
-        grid.addColumn(contact -> contact.getStatus().getName()).setHeader("Tipo");
+        grid.addColumn(contact -> contact.getTipoConta().getName()).setHeader("Tipo");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         
         
@@ -157,8 +160,15 @@ public class ListView extends VerticalLayout {
         Button addContaButton = new Button("Criar Conta");
         addContaButton.addClickListener(e -> adicionarConta());
         
+        Button gerarGraficoConta = new Button("Gerar Gráfico");
+        gerarGraficoConta.addThemeVariants(ButtonVariant.LUMO_PRIMARY,
+                ButtonVariant.LUMO_SUCCESS);
+        gerarGraficoConta.addClickListener(g ->
+        										gerarGraficoConta.getUI().ifPresent(ui ->
+        										ui.navigate("dashboard")));
+        
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContaButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContaButton, gerarGraficoConta);
         toolbar.addClassName("toolbar");
         return toolbar;
     }

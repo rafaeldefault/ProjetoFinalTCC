@@ -1,6 +1,7 @@
 package com.example.application.data.repository;
 
 import com.example.application.data.entity.ContasPagar;
+import com.example.application.data.entity.Status;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +19,7 @@ public interface ContasPagarRepository extends JpaRepository<ContasPagar, Intege
     
     @Query(value = "SELECT sum(valor) FROM ContasPagar")
     public double soma();
+
     
     
 

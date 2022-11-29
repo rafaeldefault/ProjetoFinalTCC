@@ -23,96 +23,57 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.StreamResource;
+import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 
+@Route("app-layout-navbar")
 public class MainLayout extends AppLayout {
-	private SecurityService securityService;
-	
-	public MainLayout(SecurityService securityService) {
-		this.securityService = securityService;
-		createHeader();
-		createDrawer();
-	}
-	
 
-	private void createHeader() {
 
-		H2 logo = new H2("MyFIN");
-		logo.addClassNames("text-l", "m-m");
+	  public MainLayout(SecurityService securityService) {
 		
-		StreamResource imageResource = new StreamResource("icon.png",
-			    () -> getClass().getResourceAsStream("/META-INF/resources/icons/headericon.png"));
-		
-		Image logoIf = new Image(imageResource, "Logo IFSP");
-		logoIf.getStyle().set("width", "5%");
-		
-		
-		
+	    H1 title = new H1("MyFIN");
+	    title.getStyle()
+	      .set("font-size", "var(--lumo-font-size-l)")
+	      .set("left", "var(--lumo-space-l)")
+	      .set("margin", "0")
+	      .set("position", "absolute");
+	
+	    Tabs tabs = getTabs();
+	    
 		Button logout = new Button("Sair", e -> securityService.logout());
 		logout.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-		
-		DrawerToggle dt = new DrawerToggle();
-		dt.addClassName("drawer");
-		dt.addThemeVariants();
-		
-		HorizontalLayout header =	new HorizontalLayout(dt, logoIf, logo, logout);
 	
-		header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
-		header.expand(logo);
-		header.setWidthFull();
-		header.addClassNames("py-0", "px-m");
-		
-		
-		
-		
-		addToNavbar(header);
+	    addToNavbar(title, tabs, logout);
+	  }
+	
+	  private Tabs getTabs() {
+	    Tabs tabs = new Tabs();
+	    tabs.getStyle().set("margin", "auto");
+	    tabs.add(
+	      createTab("Bem-Vindo", HomePage.class),
+	      createTab("Contas Bancárias", ListView.class),
+	      createTab("Receitas", ReceitasView.class),
+	      createTab("Despesas", DespesasView.class),
+	      createTab("Boletos", ContasPagarView.class)
+	    );
+	    return tabs;
+	  }
+	
+	  private Tab createTab(String viewName, Class<? extends Component> navigationTarget) {
+	    RouterLink link = new RouterLink(viewName, navigationTarget);
+	   
+	    link.add();
+	    // Demo has no routes
+	
+	    link.setTabIndex(-1);
+	
+	    return new Tab(link);
+	  }
 	}
-	
-	private void createDrawer() {
-		
-		RouterLink listView	=	new RouterLink("Contas Bancárias", ListView.class);
-		HorizontalLayout List = new HorizontalLayout(VaadinIcon.WALLET.create(), listView);
-		
-		RouterLink homePage	=	new RouterLink("Home", HomePage.class);
-		HorizontalLayout Home = new HorizontalLayout(VaadinIcon.HOME.create(), homePage);
-		
-		RouterLink dashBoard = new RouterLink("Dashboard", DashBoardView.class);
-		HorizontalLayout Dash = new HorizontalLayout(VaadinIcon.DASHBOARD.create(), dashBoard);
-				
-		RouterLink DespesasView	=	new RouterLink("Despesas", DespesasView.class);
-		HorizontalLayout Despesas = new HorizontalLayout(VaadinIcon.MONEY_WITHDRAW.create(), DespesasView);
-		
-		RouterLink ContasPagarView	=	new RouterLink("Contas a Pagar", ContasPagarView.class);
-		HorizontalLayout ContasP = new HorizontalLayout(VaadinIcon.MONEY_EXCHANGE.create(), ContasPagarView);
-		
-		RouterLink ReceitasView	=	new RouterLink("Receitas", ReceitasView.class);
-		HorizontalLayout Receitas = new HorizontalLayout(VaadinIcon.MONEY_DEPOSIT.create(), ReceitasView);
-		
-		
-		
-		listView.setHighlightCondition(HighlightConditions.sameLocation());
-		
-		
-		addToDrawer(new VerticalLayout(
-				Home,
-				List,
-				Dash,
-				Despesas,
-				ContasP,
-				Receitas
-				));
-		
-	}
-	
-	/*
-    private RouterLink createMenuLink(RouterLink rl, String caption, Icon icon) {
-    	
-        rl.add(icon);
-        rl.add("   ");
-        rl.add(new Span(caption));
-        icon.setSize("18px");
-        return rl;
-    }
-    */
-		
 
-}
+

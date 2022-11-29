@@ -1,6 +1,7 @@
 package com.example.application.views.list;
 
 import com.example.application.data.entity.Contas;
+import com.example.application.data.entity.TipoConta;
 import com.example.application.data.entity.Status;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
@@ -26,7 +27,7 @@ public class ContaForm extends FormLayout {
 
     TextField conta = new TextField("Conta");
     NumberField saldo = new NumberField("Saldo");
-    ComboBox<Status> status = new ComboBox<Status>("Tipo");
+    ComboBox<TipoConta> tipoConta = new ComboBox<TipoConta>("Tipo");
 
 
 
@@ -35,17 +36,17 @@ public class ContaForm extends FormLayout {
     Button cancelar = new Button("Cancelar");
     private Contas contas;
 
-    public ContaForm(List<Status> statuses){
+    public ContaForm(List<TipoConta> tiposContas){
         addClassName("contact-form");
         binder.bindInstanceFields(this);
 
-        status.setItems(statuses);
-        status.setItemLabelGenerator(Status::getName);
+        tipoConta.setItems(tiposContas);
+        tipoConta.setItemLabelGenerator(TipoConta::getName);
 
         add(
                 conta,
                 saldo,
-                status,
+                tipoConta,
                 createButtonLayout()
         );
     }

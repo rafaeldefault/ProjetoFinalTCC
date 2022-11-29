@@ -55,7 +55,7 @@ public class ContasPagarForm extends FormLayout {
         
 
         status.setItems(statuses);
-        status.setItemLabelGenerator(Status::getName);
+        status.setItemLabelGenerator(Status::getNomePagar);
 
         add(
                 entidade,

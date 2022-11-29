@@ -11,11 +11,13 @@ import com.example.application.data.entity.ContasPagar;
 import com.example.application.data.entity.Despesas;
 import com.example.application.data.entity.Receitas;
 import com.example.application.data.entity.Status;
+import com.example.application.data.entity.TipoConta;
 import com.example.application.data.repository.ContasPagarRepository;
 import com.example.application.data.repository.ContasRepository;
 import com.example.application.data.repository.DespesasRepository;
 import com.example.application.data.repository.ReceitasRepository;
 import com.example.application.data.repository.StatusRepository;
+import com.example.application.data.repository.TipoContaRepository;
 import com.vaadin.exampledata.DataType;
 import com.vaadin.exampledata.ExampleDataGenerator;
 import com.vaadin.flow.spring.annotation.SpringComponent;
@@ -34,7 +36,8 @@ public class DataGenerator {
     		ReceitasRepository receitasRepository,
     		DespesasRepository despesasRepository,
     		ContasPagarRepository contasPagarRepository,
-    		StatusRepository statusRepository) {
+    		StatusRepository statusRepository,
+    		TipoContaRepository tipoContaRepository) {
 
         return args -> {
             Logger logger = LoggerFactory.getLogger(getClass());
@@ -46,9 +49,9 @@ public class DataGenerator {
 
             logger.info("Gerando informações demonstrativas...");
 
-            List<Status> statuses = statusRepository
+            List<TipoConta> tipoConta = tipoContaRepository
                     .saveAll(Stream.of("Corrente", "Poupança")
-                            .map(Status::new).collect(Collectors.toList()));
+                            .map(TipoConta::new).collect(Collectors.toList()));
 
             logger.info("... gerando 5 Contas aleatorias...");
             ExampleDataGenerator<Contas> contasGenerator = new ExampleDataGenerator<>(Contas.class,
@@ -58,7 +61,7 @@ public class DataGenerator {
 
             Random r = new Random(seed);
             List<Contas> conta = contasGenerator.create(5, seed).stream().peek(contact -> {
-                contact.setStatus(statuses.get(r.nextInt(statuses.size())));
+                contact.setTipoConta(tipoConta.get(r.nextInt(tipoConta.size())));
             }).collect(Collectors.toList());
 
             contasRepository.saveAll(conta);
@@ -67,7 +70,7 @@ public class DataGenerator {
             
 // ----------------------------------------------------------------------------------------------------
             
-            List<Status> statuses2 = statusRepository
+            List<Status> statuses = statusRepository
                     .saveAll(Stream.of("Quitada", "A Pagar")
                             .map(Status::new).collect(Collectors.toList()));
 
@@ -78,10 +81,10 @@ public class DataGenerator {
             contasPagarGenerator.setData(ContasPagar::setValor, DataType.PRICE);
             contasPagarGenerator.setData(ContasPagar::setVencimento, DataType.DATE_NEXT_30_DAYS);
 
-
-            Random r2 = new Random(seed);
-            List<ContasPagar> contaPagar = contasPagarGenerator.create(5, seed).stream().peek(contact -> {
-                contact.setStatus(statuses2.get(r2.nextInt(statuses2.size())));
+            int seed2 = 623;
+            Random r2 = new Random(seed2);
+            List<ContasPagar> contaPagar = contasPagarGenerator.create(5, seed2).stream().peek(contact -> {
+                contact.setStatus(statuses.get(r2.nextInt(statuses.size())));
             }).collect(Collectors.toList());
 
             contasPagarRepository.saveAll(contaPagar);
@@ -90,7 +93,6 @@ public class DataGenerator {
             
 //--------------------------------------------------------------------------------------------------------
             
-
             logger.info("... gerando 5 Contas a Pagar aleatorias...");
             ExampleDataGenerator<Despesas> despesasGenerator = new ExampleDataGenerator<>(Despesas.class,
                     LocalDateTime.now());
@@ -98,9 +100,9 @@ public class DataGenerator {
             despesasGenerator.setData(Despesas::setValor, DataType.PRICE);
             despesasGenerator.setData(Despesas::setMes, DataType.WORD);
 
-
-            Random r3 = new Random(seed);
-            List<Despesas> despesa = despesasGenerator.create(5, seed).stream().peek(contact -> {
+            int seed3 = 863;
+            Random r3 = new Random(seed3);
+            List<Despesas> despesa = despesasGenerator.create(5, seed3).stream().peek(contact -> {
                 contact.setStatus(statuses.get(r3.nextInt(statuses.size())));
             }).collect(Collectors.toList());
 
@@ -110,16 +112,15 @@ public class DataGenerator {
             
 //--------------------------------------------------------------------------------------------------------
             
-
             ExampleDataGenerator<Receitas> receitasGenerator = new ExampleDataGenerator<>(Receitas.class,
                     LocalDateTime.now());
             receitasGenerator.setData(Receitas::setNatureza, DataType.COMPANY_NAME);
             receitasGenerator.setData(Receitas::setValor, DataType.PRICE);
             receitasGenerator.setData(Receitas::setMes, DataType.WORD);
 
-
-            Random r4 = new Random(seed);
-            List<Receitas> receitas = receitasGenerator.create(5, seed).stream().peek(contact -> {
+            int seed4 = 958;
+            Random r4 = new Random(seed4);
+            List<Receitas> receitas = receitasGenerator.create(5, seed4).stream().peek(contact -> {
                 contact.setStatus(statuses.get(r4.nextInt(statuses.size())));
             }).collect(Collectors.toList());
 

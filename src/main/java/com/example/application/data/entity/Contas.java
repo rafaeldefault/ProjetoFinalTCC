@@ -1,12 +1,16 @@
 package com.example.application.data.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+
 
 @Entity
 public class Contas extends AbstractEntity {
@@ -15,17 +19,17 @@ public class Contas extends AbstractEntity {
     private String conta = "";
 
     private double saldo;
-
+    
     @NotNull
     @ManyToOne
-    private Status status;
-
-    public Status getStatus() {
-        return status;
+    private TipoConta tipoConta;
+    
+    public TipoConta getTipoConta() {
+        return tipoConta;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setTipoConta(TipoConta tipoConta) {
+        this.tipoConta = tipoConta;
     }
 
     public String getConta() {
@@ -43,4 +47,7 @@ public class Contas extends AbstractEntity {
     public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
+
+
+
 }
