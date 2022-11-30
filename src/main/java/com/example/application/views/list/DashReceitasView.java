@@ -115,7 +115,7 @@ public class DashReceitasView extends VerticalLayout{
 		
 		DataSeries dataSeries = new DataSeries();
 		service.buscaTodasReceitas(null).forEach(receita->{
-			dataSeries.add(new DataSeriesItem(receita.getMes(), receita.getValor()));
+			dataSeries.add(new DataSeriesItem(receita.getMes(), service.somaMesReceitas(receita.getMes())));
 		});
 		
 		chart.getConfiguration().setSeries(dataSeries);

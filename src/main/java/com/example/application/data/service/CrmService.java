@@ -143,7 +143,7 @@ public class CrmService {
         }
     }
     
-    public List<Receitas> somaMesReceitas(String mesComp) {
+    public double somaMesReceitas(String mesComp) {
     	return receitasRepository.buscaMes(mesComp);
     }
     
