@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.security.PermitAll;
 
-import com.example.application.data.entity.Receitas;
+import com.example.application.data.entity.Despesas;
 import com.example.application.data.service.CrmService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
@@ -42,38 +42,38 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 
-@Route(value = "dashboard_receitas", layout = MainLayout.class)
+@Route(value = "dashboard_despesas", layout = MainLayout.class)
 @PageTitle("Gráficos")
 @PermitAll
-public class DashReceitasView extends VerticalLayout{
+public class DashDespesasView extends VerticalLayout{
 	private CrmService service;
 	
 	
-	public DashReceitasView(CrmService service) {
+	public DashDespesasView(CrmService service) {
 		this.service = service;
 		addClassName("dashboard-view");
 		GradientColor color = GradientColor.createLinear(0, 0, 0, 1);
 		color.addColorStop(0, new SolidColor("#000000"));
 		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-		add(getReceitasStats(), getReceitasSaldoChart());
+		add(getDespesasStats(), getDespesasSaldoChart());
 	}
 	
-	private Component getReceitasStats() {
-		H3 stats = new H3("Receita Total R$" + service.somaReceitas());
+	private Component getDespesasStats() {
+		H3 stats = new H3("Despesa Total R$" + service.somaDespesas());
 		stats.addClassNames("text-xl", "mt-m");
 		return stats;
 	}
 
 
 
-	private Component getReceitasSaldoChart() {
+	private Component getDespesasSaldoChart() {
 		Chart chart = new Chart(ChartType.COLUMN);
 		
 		// Modify the default configuration a bit
 		Configuration conf = chart.getConfiguration();
 		
-        conf.setTitle("Receitas");
-        conf.setSubTitle("Ganhos registrados");
+        conf.setTitle("Despesas");
+        conf.setSubTitle("Gastos registrados");
         conf.getLegend().setEnabled(false);
 
         XAxis x = new XAxis();
@@ -99,7 +99,7 @@ public class DashReceitasView extends VerticalLayout{
 
 
         PlotOptionsColumn plotOptionsColumn = new PlotOptionsColumn();
-        plotOptionsColumn.setColor(SolidColor.LIGHTGREEN);
+        plotOptionsColumn.setColor(SolidColor.INDIANRED);
 
 		// Give more room for the labels
 		conf.getChart().setSpacingRight(0);
@@ -114,8 +114,8 @@ public class DashReceitasView extends VerticalLayout{
 		
 		
 		DataSeries dataSeries = new DataSeries();
-		service.buscaTodasReceitas(null).forEach(receita->{
-			dataSeries.add(new DataSeriesItem(receita.getMes(), service.somaMesReceitas(receita.getMes())));
+		service.buscaTodasDespesas(null).forEach(despesa->{
+			dataSeries.add(new DataSeriesItem(despesa.getMes(), service.somaMesDespesas(despesa.getMes())));
 		});
 		
 		chart.getConfiguration().setSeries(dataSeries);

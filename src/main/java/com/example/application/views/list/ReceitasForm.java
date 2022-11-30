@@ -20,6 +20,8 @@ import com.vaadin.flow.component.charts.model.style.GradientColor;
 import com.vaadin.flow.component.charts.model.style.SolidColor;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -30,9 +32,15 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.shared.Registration;
+import com.vaadin.flow.theme.Theme;
+import com.vaadin.flow.theme.lumo.Lumo;
 
 
 public class ReceitasForm extends FormLayout {
+	
+	FormLayout forml = new FormLayout();
+	
+	
 	
 	Binder<Receitas> binder = new BeanValidationBinder<>(Receitas.class);
 
@@ -54,6 +62,7 @@ public class ReceitasForm extends FormLayout {
         addClassName("contact-form");
         binder.bindInstanceFields(this);
         
+        
 
         
 
@@ -70,9 +79,11 @@ public class ReceitasForm extends FormLayout {
         binder.readBean(receita);
     }
 
+    
     private Component createButtonLayout(){
-        criar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        deletar.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        criar.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.MATERIAL_CONTAINED);
+        deletar.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.MATERIAL_CONTAINED);
+        deletar.getStyle().set("background","var(--lumo-error-color)");
         cancelar.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         criar.addClickListener(event -> validarESalvar());

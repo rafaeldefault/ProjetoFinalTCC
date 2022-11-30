@@ -156,18 +156,19 @@ public class ReceitasView extends VerticalLayout {
         filterText.addValueChangeListener(e -> updateList());
 
         Button addContaButton = new Button("Criar Receita");
+        addContaButton.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
         addContaButton.addClickListener(e -> adicionarReceita());
         
         Button gerarGraficoRec = new Button("Gerar Gráfico");
-        gerarGraficoRec.addThemeVariants(ButtonVariant.LUMO_PRIMARY,
-                ButtonVariant.LUMO_SUCCESS);
+        gerarGraficoRec.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.MATERIAL_CONTAINED);
+        gerarGraficoRec.getStyle().set("background","var(--lumo-primary-color)");
         gerarGraficoRec.addClickListener(g ->
         										gerarGraficoRec.getUI().ifPresent(ui ->
         										ui.navigate("dashboard_receitas")));
         
         Button gerarGraficoRecXDesp = new Button("Comparar c/ Despesas");
-        gerarGraficoRecXDesp.addThemeVariants(ButtonVariant.LUMO_SUCCESS,
-                ButtonVariant.LUMO_PRIMARY);
+        gerarGraficoRecXDesp.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.MATERIAL_CONTAINED);
+        gerarGraficoRecXDesp.getStyle().set("background-color","#333");
         gerarGraficoRecXDesp.addClickListener(g ->
         gerarGraficoRecXDesp.getUI().ifPresent(ui ->
         										ui.navigate("dashboard_receitasxdespesas")));

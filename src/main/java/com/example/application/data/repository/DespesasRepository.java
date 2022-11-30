@@ -19,6 +19,9 @@ public interface DespesasRepository extends JpaRepository<Despesas, Integer> {
     @Query(value = "SELECT sum(valor) FROM Despesas")
     public double soma();
     
+    @Query("SELECT sum(valor) FROM Despesas WHERE mes = :mesComp")
+    public double buscaMesDesp(@Param("mesComp") String mesComp);
+    
     
 
 }

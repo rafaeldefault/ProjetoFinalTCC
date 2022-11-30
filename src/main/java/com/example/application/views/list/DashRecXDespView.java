@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.security.PermitAll;
 
 import com.example.application.data.entity.Receitas;
+import com.example.application.data.entity.Despesas;
 import com.example.application.data.service.CrmService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
@@ -42,38 +43,38 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 
-@Route(value = "dashboard_receitas", layout = MainLayout.class)
+@Route(value = "dashboard_receitasxdespesas", layout = MainLayout.class)
 @PageTitle("Gráficos")
 @PermitAll
-public class DashReceitasView extends VerticalLayout{
+public class DashRecXDespView extends VerticalLayout{
 	private CrmService service;
 	
 	
-	public DashReceitasView(CrmService service) {
+	public DashRecXDespView(CrmService service) {
 		this.service = service;
-		addClassName("dashboard-view");
+		addClassName("dashboard_receitasxdespesas");
 		GradientColor color = GradientColor.createLinear(0, 0, 0, 1);
 		color.addColorStop(0, new SolidColor("#000000"));
 		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-		add(getReceitasStats(), getReceitasSaldoChart());
+		add(getReceitasXDespesasStats(), getReceitasXDespesasSaldoChart());
 	}
 	
-	private Component getReceitasStats() {
-		H3 stats = new H3("Receita Total R$" + service.somaReceitas());
+	private Component getReceitasXDespesasStats() {
+		H3 stats = new H3("Receita Total R$" + service.somaReceitas() + "  |  Despesa Total R$" + service.somaDespesas());
 		stats.addClassNames("text-xl", "mt-m");
 		return stats;
 	}
+	
 
 
-
-	private Component getReceitasSaldoChart() {
+	private Component getReceitasXDespesasSaldoChart() {
 		Chart chart = new Chart(ChartType.COLUMN);
 		
 		// Modify the default configuration a bit
 		Configuration conf = chart.getConfiguration();
 		
-        conf.setTitle("Receitas");
-        conf.setSubTitle("Ganhos registrados");
+        conf.setTitle("Receitas X Despesas");
+        conf.setSubTitle("Comparação");
         conf.getLegend().setEnabled(false);
 
         XAxis x = new XAxis();
@@ -99,7 +100,7 @@ public class DashReceitasView extends VerticalLayout{
 
 
         PlotOptionsColumn plotOptionsColumn = new PlotOptionsColumn();
-        plotOptionsColumn.setColor(SolidColor.LIGHTGREEN);
+        plotOptionsColumn.setColor(SolidColor.FIREBRICK);
 
 		// Give more room for the labels
 		conf.getChart().setSpacingRight(0);

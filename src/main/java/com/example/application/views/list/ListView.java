@@ -158,11 +158,13 @@ public class ListView extends VerticalLayout {
         filterText.addValueChangeListener(e -> updateList());
 
         Button addContaButton = new Button("Criar Conta");
+        addContaButton.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
+
         addContaButton.addClickListener(e -> adicionarConta());
         
         Button gerarGraficoConta = new Button("Gerar Gráfico");
-        gerarGraficoConta.addThemeVariants(ButtonVariant.LUMO_PRIMARY,
-                ButtonVariant.LUMO_SUCCESS);
+        gerarGraficoConta.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.MATERIAL_CONTAINED);
+        gerarGraficoConta.getStyle().set("background","var(--lumo-primary-color)");
         gerarGraficoConta.addClickListener(g ->
         										gerarGraficoConta.getUI().ifPresent(ui ->
         										ui.navigate("dashboard")));

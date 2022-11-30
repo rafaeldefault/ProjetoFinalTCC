@@ -116,6 +116,10 @@ public class CrmService {
         }
     }
     
+    public double somaMesDespesas(String mesComp) {
+    	return despesasRepository.buscaMesDesp(mesComp);
+    }
+    
     public void salvarDespesa(Despesas despesa){
         if(despesa == null){
             System.err.println("Despesa retornou null");
@@ -171,4 +175,6 @@ public class CrmService {
     public List<TipoConta> buscaTodosTipos(){
         return tipoContaRepository.findAll();
     }
+
+
 }

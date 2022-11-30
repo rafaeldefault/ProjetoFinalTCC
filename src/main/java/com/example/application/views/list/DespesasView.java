@@ -155,10 +155,21 @@ public class DespesasView extends VerticalLayout {
         filterText.addValueChangeListener(e -> updateList());
 
         Button addContaButton = new Button("Criar Despesa");
+        addContaButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.MATERIAL_CONTAINED);
         addContaButton.addClickListener(e -> adicionarDespesa());
         
+        
+        Button gerarGraficoDesp = new Button("Gerar Gráfico");
+        gerarGraficoDesp.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.MATERIAL_CONTAINED);
+        gerarGraficoDesp.getStyle().set("background","var(--lumo-primary-color)");
+        
+        
+        gerarGraficoDesp.addClickListener(g ->
+        										gerarGraficoDesp.getUI().ifPresent(ui ->
+        										ui.navigate("dashboard_despesas")));
+        
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContaButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContaButton, gerarGraficoDesp);
         toolbar.addClassName("toolbar");
         return toolbar;
     }

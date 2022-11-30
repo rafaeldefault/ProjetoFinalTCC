@@ -70,8 +70,9 @@ public class DespesasForm extends FormLayout {
     }
 
     private Component createButtonLayout(){
-        criar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        deletar.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        criar.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.MATERIAL_CONTAINED);
+        deletar.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.MATERIAL_CONTAINED);
+        deletar.getStyle().set("background","var(--lumo-error-color)");
         cancelar.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         criar.addClickListener(event -> validarESalvar());

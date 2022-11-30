@@ -155,6 +155,7 @@ public class ContasPagarView extends VerticalLayout {
         filterText.addValueChangeListener(e -> updateList());
 
         Button addContaButton = new Button("Criar conta");
+        addContaButton.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
         addContaButton.addClickListener(e -> adicionarConta());
         
 
