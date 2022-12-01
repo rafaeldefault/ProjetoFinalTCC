@@ -27,6 +27,8 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
@@ -58,6 +60,7 @@ public class ReceitasView extends VerticalLayout {
         this.service = service;
         addClassName("list-view");
         setSizeFull();
+        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         
 
         configureGrid();
@@ -102,7 +105,7 @@ public class ReceitasView extends VerticalLayout {
 
     private void configureForm() {
         form = new ReceitasForm();
-        ((HasSize) form).setWidth("25em");
+        ((HasSize) form).setWidth("30em");
 
         form.addListener(ReceitasForm.SalvarEvento.class, this::salvarReceita);
         form.addListener(ReceitasForm.DeletarEvento.class, this::deletarReceita);
@@ -149,32 +152,27 @@ public class ReceitasView extends VerticalLayout {
     
 
     private Component getToolbar() {
-        filterText.setPlaceholder("Procurar por receita...");
+    	
+        filterText.setPlaceholder(" Procurar por receita...");
+        filterText.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         filterText.setClearButtonVisible(true);
-        setDefaultHorizontalComponentAlignment(Alignment.START);
-        filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addContaButton = new Button("Criar Receita");
+        Button addContaButton = new Button("Criar Receita", new Icon(VaadinIcon.PLUS));
         addContaButton.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
         addContaButton.addClickListener(e -> adicionarReceita());
         
-        Button gerarGraficoRec = new Button("Gerar Gráfico");
+        Button gerarGraficoRec = new Button("Gerar Gráfico", new Icon(VaadinIcon.BAR_CHART_H));
         gerarGraficoRec.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.MATERIAL_CONTAINED);
         gerarGraficoRec.getStyle().set("background","var(--lumo-primary-color)");
         gerarGraficoRec.addClickListener(g ->
         										gerarGraficoRec.getUI().ifPresent(ui ->
         										ui.navigate("dashboard_receitas")));
         
-        Button gerarGraficoRecXDesp = new Button("Comparar c/ Despesas");
-        gerarGraficoRecXDesp.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.MATERIAL_CONTAINED);
-        gerarGraficoRecXDesp.getStyle().set("background-color","#333");
-        gerarGraficoRecXDesp.addClickListener(g ->
-        gerarGraficoRecXDesp.getUI().ifPresent(ui ->
-        										ui.navigate("dashboard_receitasxdespesas")));
+
         
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContaButton, gerarGraficoRec, gerarGraficoRecXDesp);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContaButton, gerarGraficoRec);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
@@ -185,11 +183,32 @@ public class ReceitasView extends VerticalLayout {
 	}
 	
 	
+	
 	private Component getReceitasStats() {
-		H3 stats = new H3("Receita Total R$" + service.somaReceitas());
-		stats.addClassNames("text-xl", "mt-m");
-		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-		return stats;
+		Button but;
+		String valor;
+		
+		valor = "R$ " + service.somaDespesas();
+		
+
+	        but = new Button(valor);
+	        but.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
+	        but.setEnabled(false);
+	        but.getStyle().set("background-color","rgba(0, 128, 0, 0.2)");
+	        but.getStyle().set("height","50px !important");
+	        but.getStyle().set("margin-top","25px");
+	        but.getStyle().set("margin-bot","10px");
+	        but.getStyle().set("font-size", "20px !important");
+        
+		
+		
+		HorizontalLayout hor = new HorizontalLayout();
+		H3 stats = new H3("Receita Total ");
+		
+		
+		hor.add(stats);
+		hor.add(but);
+		return hor;
 	}
 	
 	

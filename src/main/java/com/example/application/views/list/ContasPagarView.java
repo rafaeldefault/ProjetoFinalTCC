@@ -18,6 +18,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.charts.Chart;
+import com.vaadin.flow.component.charts.model.Label;
 import com.vaadin.flow.component.charts.model.style.GradientColor;
 import com.vaadin.flow.component.charts.model.style.SolidColor;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -25,6 +26,8 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
@@ -33,6 +36,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -55,7 +59,9 @@ public class ContasPagarView extends VerticalLayout {
     public ContasPagarView(CrmService service) {
         this.service = service;
         addClassName("list-view");
-        setSizeFull();
+        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        
+        
         
 
         configureGrid();
@@ -100,7 +106,7 @@ public class ContasPagarView extends VerticalLayout {
 
     private void configureForm() {
         form = new ContasPagarForm(service.buscaTodosStatus());
-        ((HasSize) form).setWidth("25em");
+        ((HasSize) form).setWidth("30em");
 
         form.addListener(ContasPagarForm.SalvarEvento.class, this::salvarContaPagar);
         form.addListener(ContasPagarForm.DeletarEvento.class, this::deletarContaPagar);
@@ -120,15 +126,41 @@ public class ContasPagarView extends VerticalLayout {
     	updateList();
     	fecharEditor();
     }
+    
+    
+    private Button criaLabel(String status) {
+        Button but;
+        if (status == "Quitada") {
+	        but = new Button("Quitada", new Icon(VaadinIcon.CHECK_CIRCLE));
+	        but.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
+	        but.setEnabled(false);
+	        but.getStyle().set("background-color","rgba(0, 128, 0, 0.25)");
+        } else {
+	        but = new Button("A Pagar", new Icon(VaadinIcon.CLOSE_CIRCLE));
+	        but.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
+	        but.setEnabled(false);
+	        but.getStyle().set("background-color","rgba(128, 0, 0, 0.25)");
+        }
+        return but;
+    }
+
+
+    
 
 
     private void configureGrid() {
         grid.addClassNames("contasPagar-grid");
         grid.setAllRowsVisible(true);
         grid.setColumns("entidade", "valor", "vencimento");
-        grid.addColumn(contact -> contact.getStatus().getNomePagar()).setHeader("Status");
-        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        grid.addColumn(
+        		new ComponentRenderer<>(contact -> {
+        			
+        			Button but = criaLabel(contact.getStatus().getNomePagar());
+
+        	        return but;})).setHeader("Status"); 
         
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+            
         
         
         grid.asSingleSelect().addValueChangeListener(e -> editarConta(e.getValue()));
@@ -148,13 +180,13 @@ public class ContasPagarView extends VerticalLayout {
     
 
     private Component getToolbar() {
-        filterText.setPlaceholder("Procurar por conta...");
+        filterText.setPlaceholder(" Procurar por conta...");
+        filterText.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         filterText.setClearButtonVisible(true);
-        setDefaultHorizontalComponentAlignment(Alignment.START);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addContaButton = new Button("Criar conta");
+        Button addContaButton = new Button("Criar conta", new Icon(VaadinIcon.PLUS));
         addContaButton.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
         addContaButton.addClickListener(e -> adicionarConta());
         
@@ -171,7 +203,7 @@ public class ContasPagarView extends VerticalLayout {
 	
 	
 	private Component getContasPagarStats() {
-		H3 stats = new H3("Divida Total R$" + service.somaDivida());
+		H3 stats = new H3("Boletos");
 		stats.addClassNames("text-xl", "mt-m");
 		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 		return stats;

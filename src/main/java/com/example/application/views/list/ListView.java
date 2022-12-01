@@ -22,6 +22,8 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.login.LoginI18n.Form;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -50,6 +52,7 @@ public class ListView extends VerticalLayout {
     ContaForm form;
     Chart chart;
     Span stats = new Span();
+    
     private CrmService service;
     
 
@@ -57,13 +60,14 @@ public class ListView extends VerticalLayout {
     public ListView(CrmService service) {
         this.service = service;
         addClassName("list-view");
-        setSizeFull();
+        
+        
         
 
         configureGrid();
         configureForm();
         
-        
+        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         
 
         add(
@@ -102,7 +106,7 @@ public class ListView extends VerticalLayout {
 
     private void configureForm() {
         form = new ContaForm(service.buscaTodosTipos());
-        ((HasSize) form).setWidth("25em");
+        ((HasSize) form).setWidth("30em");
 
         form.addListener(ContaForm.SalvarEvento.class, this::salvarConta);
         form.addListener(ContaForm.DeletarEvento.class, this::deletarConta);
@@ -151,18 +155,18 @@ public class ListView extends VerticalLayout {
     
 
     private Component getToolbar() {
-        filterText.setPlaceholder("Procurar por conta...");
+        filterText.setPlaceholder(" Procurar por conta...");
+        filterText.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         filterText.setClearButtonVisible(true);
-        setDefaultHorizontalComponentAlignment(Alignment.START);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addContaButton = new Button("Criar Conta");
+        Button addContaButton = new Button("Criar Conta", new Icon(VaadinIcon.PLUS));
         addContaButton.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
 
         addContaButton.addClickListener(e -> adicionarConta());
         
-        Button gerarGraficoConta = new Button("Gerar Gráfico");
+        Button gerarGraficoConta = new Button("Gerar Dashboard", new Icon(VaadinIcon.PIE_CHART));
         gerarGraficoConta.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.MATERIAL_CONTAINED);
         gerarGraficoConta.getStyle().set("background","var(--lumo-primary-color)");
         gerarGraficoConta.addClickListener(g ->
@@ -182,10 +186,39 @@ public class ListView extends VerticalLayout {
 	
 	
 	private Component getContaStats() {
-		H3 stats = new H3("Saldo Total R$" + service.somaSaldo());
-		stats.addClassNames("text-xl", "mt-m");
-		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-		return stats;
+		Button but;
+		String valor;
+		
+		valor = "R$: " + service.somaSaldo();
+		
+        if (service.somaSaldo() > 0) {
+	        but = new Button(valor);
+	        but.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
+	        but.setEnabled(false);
+	        but.getStyle().set("background-color","rgba(0, 128, 0, 0.2)");
+	        but.getStyle().set("height","50px !important");
+	        but.getStyle().set("margin-top","25px");
+	        but.getStyle().set("margin-bot","10px");
+	        but.getStyle().set("font-size", "20px !important");
+        } else {
+	        but = new Button(valor);
+	        but.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
+	        but.setEnabled(false);
+	        but.getStyle().set("background-color","rgba(128, 0, 0, 0.2)");
+	        but.getStyle().set("height","50px !important");
+	        but.getStyle().set("margin-top","25px");
+	        but.getStyle().set("margin-bot","10px");
+	        but.getStyle().set("font-size", "20px !important");
+        }
+		
+		
+		HorizontalLayout hor = new HorizontalLayout();
+		H3 stats = new H3("Saldo Total: ");
+		
+		
+		hor.add(stats);
+		hor.add(but);
+		return hor;
 	}
 	
 

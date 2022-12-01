@@ -8,15 +8,20 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.ChartType;
 import com.vaadin.flow.component.charts.model.Configuration;
+import com.vaadin.flow.component.charts.model.DataLabels;
 import com.vaadin.flow.component.charts.model.DataLabelsFunnel;
 import com.vaadin.flow.component.charts.model.DataSeries;
 import com.vaadin.flow.component.charts.model.DataSeriesItem;
+import com.vaadin.flow.component.charts.model.HorizontalAlign;
 import com.vaadin.flow.component.charts.model.Label;
 import com.vaadin.flow.component.charts.model.PlotLine;
 import com.vaadin.flow.component.charts.model.PlotOptionsColumn;
 import com.vaadin.flow.component.charts.model.PlotOptionsFunnel;
+import com.vaadin.flow.component.charts.model.PlotOptionsPie;
 import com.vaadin.flow.component.charts.model.Stacking;
+import com.vaadin.flow.component.charts.model.Title;
 import com.vaadin.flow.component.charts.model.Tooltip;
+import com.vaadin.flow.component.charts.model.VerticalAlign;
 import com.vaadin.flow.component.charts.model.XAxis;
 import com.vaadin.flow.component.charts.model.YAxis;
 import com.vaadin.flow.component.charts.model.style.GradientColor;
@@ -55,21 +60,20 @@ public class DashBoardView extends VerticalLayout{
 	private Component getContasSaldoChart() {
 		Chart chart = new Chart(ChartType.PIE);
 		
-		// Modify the default configuration a bit
+		
 		Configuration conf = chart.getConfiguration();
 		conf.getLegend().setEnabled(true); 
         
 
-		// Give more room for the labels
+		
 		conf.getChart().setSpacingRight(0);
 
-		// Configure the funnel neck shape
-		PlotOptionsFunnel options = new PlotOptionsFunnel();
 		
-
-		// Style the data labels
-		DataLabelsFunnel dataLabels = new DataLabelsFunnel();
-		dataLabels.setFormat("<b>{point.name}</b> ({point.y:,.2f})");
+		PlotOptionsPie options =new PlotOptionsPie();
+		
+		DataLabels dataLabels = new DataLabels();
+		
+		dataLabels.setFormat("{point.name}: {percentage:%02.2f}%");
 		dataLabels.setSoftConnector(true);
 		dataLabels.setColor(SolidColor.BLACK);
 		options.setDataLabels(dataLabels);
@@ -87,6 +91,8 @@ public class DashBoardView extends VerticalLayout{
 		service.buscaTodasContas(null).forEach(conta->{
 			dataSeries.add(new DataSeriesItem(conta.getConta(), conta.getSaldo()));
 			});
+		
+		chart.setConfiguration(conf);
 		chart.getConfiguration().setSeries(dataSeries);
 		
 		return chart;

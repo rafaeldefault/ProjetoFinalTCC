@@ -26,6 +26,8 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
@@ -57,6 +59,7 @@ public class DespesasView extends VerticalLayout {
         this.service = service;
         addClassName("list-view");
         setSizeFull();
+        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         
 
         configureGrid();
@@ -101,7 +104,7 @@ public class DespesasView extends VerticalLayout {
 
     private void configureForm() {
         form = new DespesasForm();
-        ((HasSize) form).setWidth("25em");
+        ((HasSize) form).setWidth("30em");
 
         form.addListener(DespesasForm.SalvarEvento.class, this::salvarDespesa);
         form.addListener(DespesasForm.DeletarEvento.class, this::deletarDespesa);
@@ -148,18 +151,18 @@ public class DespesasView extends VerticalLayout {
     
 
     private Component getToolbar() {
-        filterText.setPlaceholder("Procurar por despesa...");
+        filterText.setPlaceholder(" Procurar por despesa...");
+        filterText.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         filterText.setClearButtonVisible(true);
-        setDefaultHorizontalComponentAlignment(Alignment.START);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addContaButton = new Button("Criar Despesa");
+        Button addContaButton = new Button("Criar Despesa", new Icon(VaadinIcon.PLUS));
         addContaButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.MATERIAL_CONTAINED);
         addContaButton.addClickListener(e -> adicionarDespesa());
         
         
-        Button gerarGraficoDesp = new Button("Gerar Gráfico");
+        Button gerarGraficoDesp = new Button("Gerar Gráfico", new Icon(VaadinIcon.BAR_CHART_H));
         gerarGraficoDesp.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.MATERIAL_CONTAINED);
         gerarGraficoDesp.getStyle().set("background","var(--lumo-primary-color)");
         
@@ -180,14 +183,33 @@ public class DespesasView extends VerticalLayout {
 	}
 	
 	
+	
 	private Component getDespesasStats() {
-		H3 stats = new H3("Divida Total R$" + service.somaDivida());
-		stats.addClassNames("text-xl", "mt-m");
-		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-		return stats;
+		Button but;
+		String valor;
+		
+		valor = "R$ " + service.somaDespesas();
+		
+
+	        but = new Button(valor);
+	        but.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
+	        but.setEnabled(false);
+	        but.getStyle().set("background-color","rgba(128, 0, 0, 0.2)");
+	        but.getStyle().set("height","50px !important");
+	        but.getStyle().set("margin-top","25px");
+	        but.getStyle().set("margin-bot","10px");
+	        but.getStyle().set("font-size", "20px !important");
+        
+		
+		
+		HorizontalLayout hor = new HorizontalLayout();
+		H3 stats = new H3("Dívida Total ");
+		
+		
+		hor.add(stats);
+		hor.add(but);
+		return hor;
 	}
-	
-	
 	
 	
 

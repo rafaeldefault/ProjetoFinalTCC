@@ -50,7 +50,7 @@ public class DataGenerator {
             logger.info("Gerando informações demonstrativas...");
 
             List<TipoConta> tipoConta = tipoContaRepository
-                    .saveAll(Stream.of("Corrente", "Poupança")
+                    .saveAll(Stream.of("Corrente", "Poupança", "Investimento")
                             .map(TipoConta::new).collect(Collectors.toList()));
 
             logger.info("... gerando 5 Contas aleatorias...");

@@ -23,6 +23,8 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -53,9 +55,9 @@ public class ReceitasForm extends FormLayout {
 
 
 
-    Button criar = new Button("Criar");
-    Button deletar = new Button("Deletar");
-    Button cancelar = new Button("Cancelar");
+    Button criar = new Button("Criar", new Icon(VaadinIcon.PLUS));
+    Button deletar = new Button("Deletar", new Icon(VaadinIcon.TRASH));
+    Button cancelar = new Button("Cancelar", new Icon(VaadinIcon.CLOSE));
     private Receitas receita;
 
     public ReceitasForm(){
